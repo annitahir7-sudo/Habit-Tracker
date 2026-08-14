@@ -78,6 +78,7 @@ def progress(user_id, habit, amount, selected_date):
     tablebase.add_progress(connection, user_id, selected_date, habit, completed, amount)
 #Give the user a choice to choose current date or different date to log their progress on and add to compeltion table
 def selected_date_func():
+    selected_date = day
     st.divider()
     st.subheader("Date")
     st.write("Choose if you would like to record your progress for today or a previous day:")
