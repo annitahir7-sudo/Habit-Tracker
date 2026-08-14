@@ -2,7 +2,7 @@ import streamlit as st
 import tablebase
 import datetime
 st.set_page_config(page_title="Add Progress")
-
+#Injecting CSS to add style
 st.html("""
     <style>
     div.st-key-add_habit{
@@ -47,6 +47,7 @@ st.html("""
 
 with st.container(key="prog"):
     st.title("Add Progress")
+#Initializing user_id
 if "user_id" in st.session_state:
     user_id = st.session_state["user_id"]
     user_id = user_id
@@ -56,7 +57,7 @@ day = datetime.datetime.now()
 day = day.date()
 connection = tablebase.connect()
 
-
+#Check if the user has completed their goal and entered a valid amount
 def progress(user_id, habit, amount, selected_date):
     goal = tablebase.return_goal(connection, user_id, habit)
     goal = goal[0]
@@ -73,26 +74,27 @@ def progress(user_id, habit, amount, selected_date):
     except:
         st.write("Enter a valid amount")
         st.rerun()
-
+    #Add the amount, date and habit into the table completion
     tablebase.add_progress(connection, user_id, selected_date, habit, completed, amount)
+#Give the user a choice to choose current date or different date to log their progress on and add to compeltion table
 def selected_date_func():
-    selected_date = 0
     st.divider()
     st.subheader("Date")
     st.write("Choose if you would like to record your progress for today or a previous day:")
     col1, col2 = st.columns(2)
     with col1:
         with st.container(border=True):
-            dayy=  st.button(day.strftime("%d %b %Y"))
+            x =  st.button(day.strftime("%d %b %Y"))
     with col2:
         with st.container(border=True):
             prev = st.date_input("Select a date:", value = None)
-    if dayy:
+    if x:
         selected_date = day
     elif prev:
         selected_date = prev
     st.divider()
     return selected_date
+#Allows the user to add their progress for a habit
 def add_habit_prog():
     habits = tablebase.see_habits(connection, user_id)
     if "reading_am" not in st.session_state:
@@ -102,6 +104,7 @@ def add_habit_prog():
     if "water_am" not in st.session_state:
         st.session_state.water_am = None
     with st.container():
+        #Show the habits the user has added
         for habit in habits:
             try:
                 habit = habit[0]
@@ -119,7 +122,7 @@ def add_habit_prog():
                 st.session_state.exercisebt = None
             if "waterbt" not in st.session_state:
                 st.session_state.waterbt = None
-            
+        #Add progress for the reading habit
         if st.session_state.reading_am and st.session_state.exercisebt == None and st.session_state.waterbt == None:
             if "reading_s" not in st.session_state:
                 st.session_state.reading_s = None
@@ -141,7 +144,8 @@ def add_habit_prog():
                         amount = st.number_input("Enter the length of time: ", value = None, placeholder ="...mins", key="reading_length")
                         submit = st.button(label="Add", key="reading_submit")
                         if submit:
-                            progress(user_id, "Reading", amount, selected_date)            
+                            progress(user_id, "Reading", amount, selected_date) 
+        #Add the progress for the exercise habit           
         if st.session_state.exercise_am and st.session_state.readingbt == None and st.session_state.waterbt == None:
             if "exercise_s" not in st.session_state:
                 st.session_state.exercise_s = None
@@ -163,6 +167,7 @@ def add_habit_prog():
                         submit = st.button(label="Add", key="exercise_submit")
                         if submit:
                             progress(user_id, "Exercise", amount, selected_date)
+        #Add the progress for the exercise habit
         if st.session_state.water_am and st.session_state.readingbt == None and st.session_state.exercisebt == None:
             if "water_s" not in st.session_state:
                 st.session_state.water_s = None
@@ -185,7 +190,7 @@ def add_habit_prog():
                         if submit:
                             progress(user_id, "Water", amount, selected_date)
 
-#Fix the disappearing date stuff      
+     
 def add_progress(user_id):
     prev_habits = tablebase.check_if_habits(connection, user_id)
     if prev_habits:
@@ -204,23 +209,21 @@ def add_progress(user_id):
     else:
         st.write("Add some habits in order to add progress!")
 
-if "back" not in st.session_state:
-    st.session_state.back = None
-if st.session_state.back == None:
-    if user_id:
-        add_progress(user_id)
-    else:
-        col1, col2 = st.columns(2)
-        with col1:
-            st.subheader("ERROR!!!")
-        st.write("Please Log in or Sign up")
-        with col2:
-            with st.container(key="v"):
-                st.page_link("login.py", label="Log in", icon="🪵")
-            with st.container(key="x"):
-                st.page_link("signup.py", label="Sign up", icon="🛑")
+#Check user has logged in
+if user_id:
+    add_progress(user_id)
+else:
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("ERROR!!!")
+    st.write("Please Log in or Sign up")
+    with col2:
+        with st.container(key="v"):
+            st.page_link("login.py", label="Log in", icon="🪵")
+        with st.container(key="x"):
+            st.page_link("signup.py", label="Sign up", icon="🛑")
 
-
+#Go back to add more progress for habits
 with st.bottom:
     go_bac = st.button("Back")
     if go_bac:
