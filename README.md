@@ -6,7 +6,7 @@ A web app built using Streamlit and designed to for users to track habits such a
 - A choice of tracking water intake, exercise and reading time is given
 - Users can see their progress over time through a graph
 - Users can give a goal and when they reach their goal, a congratulatory message is given
-  ```bash 
+ 
 ## Installation
 ### 1. Clone the repository
 ```bash
