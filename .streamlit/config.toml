@@ -1,0 +1,11 @@
+[theme]
+backgroundColor = "#ffbfe4"
+textColor = "#481e1e"
+showSidebarBorder = true
+
+
+
+
+[theme.sidebar]
+backgroundColor = "#e9ffe9f4"
+borderColor = "#7d5062"
