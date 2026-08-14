@@ -7,3 +7,20 @@ A web app built using Streamlit and designed to for users to track habits such a
 - Users can see their progress over time through a graph
 - Users can give a goal and when they reach their goal, a congratulatory message is given
   ```bash 
+## Installation
+### 1. Clone the repository
+```bash
+git clone https://github.com/annitahir7-sudo/Habit-Tracker.git
+cd Habit-Tracker
+```
+### 2. Install the required dependencies
+```bash
+pip install -r requirements.txt
+```
+### 3. Run the app
+```bash
+streamlit run entrypoint.py
+```
+### Once the app starts, open the URL shown in the terminal
+
+
