@@ -86,7 +86,7 @@ def water_form(user_id):
     if "water_form" not in st.session_state:
         st.session_state.water_form = None
     if st.session_state.water_form == None:
-        with st.form(key="water_form"):
+        with st.form(key="water_forms"):
             st.subheader("WATERRR")
             with st.popover("Fun Fact", width="stretch"):
                 st.write("Water intake is associated with improved skin barrier. With dehydration, the skin can become more vulnerable to skin disorders.")
