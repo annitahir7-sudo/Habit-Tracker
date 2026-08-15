@@ -42,8 +42,8 @@ if "user_id" in st.session_state:
         pass
 else:
     user_id = False
-    
-st.logo("🌸", size = "large")
+
+
 with st.container(key="visual"):
     st.header("Visual Progress")
 
@@ -88,6 +88,7 @@ for date in complete_date:
     date = date[0]
     date = str(date)
     complete_amount = tablebase.select_completed_amount(connection, user_id, date, "Yes")
+    complete_amount = complete_amount[0]
     ANNOTATIONS.append((date, complete_amount, "👑", "Completed your goal!!!" ))
 annotations_df = pd.DataFrame(ANNOTATIONS, columns=["date", "amount", "marker", "description"])
 annotations_df.date = pd.to_datetime(annotations_df.date)
