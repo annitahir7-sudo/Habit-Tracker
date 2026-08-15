@@ -117,20 +117,13 @@ def add_habit_prog():
                 st.session_state.exercise_am = True
             if "Water" in habit:
                 st.session_state.water_am = True                      
-            if "readingbt" not in st.session_state:
-                st.session_state.readingbt = None
-            if "exercisebt" not in st.session_state:
-                st.session_state.exercisebt = None
-            if "waterbt" not in st.session_state:
-                st.session_state.waterbt = None
         #Add progress for the reading habit
-        if st.session_state.reading_am and st.session_state.exercisebt == None and st.session_state.waterbt == None:
+        if st.session_state.reading_am:
             if "reading_s" not in st.session_state:
                 st.session_state.reading_s = None
             if st.session_state.reading_s == None:
                 reading = st.button("Reading", icon = "📖", key="reading_bt")
                 if reading:
-                    st.session_state.readingbt = True
                     st.session_state.reading_s = True
                     st.rerun()
             if st.session_state.reading_s:
@@ -145,15 +138,15 @@ def add_habit_prog():
                         amount = st.number_input("Enter the length of time: ", value = None, placeholder ="...mins", key="reading_length")
                         submit = st.button(label="Add", key="reading_submit")
                         if submit:
-                            progress(user_id, "Reading", amount, selected_date) 
+                            progress(user_id, "Reading", amount, selected_date)
+                            st.session_state.date_st = None
         #Add the progress for the exercise habit           
-        if st.session_state.exercise_am and st.session_state.readingbt == None and st.session_state.waterbt == None:
+        if st.session_state.exercise_am:
             if "exercise_s" not in st.session_state:
                 st.session_state.exercise_s = None
             if st.session_state.exercise_s == None:
                 exercise = st.button("Exercise", icon = "🏃‍♀️", key="exercise_bt")
                 if exercise:
-                    st.session_state.exercisebt = True
                     st.session_state.exercise_s = True
             if st.session_state.exercise_s:
                 st.header("Exercise")
@@ -168,14 +161,14 @@ def add_habit_prog():
                         submit = st.button(label="Add", key="exercise_submit")
                         if submit:
                             progress(user_id, "Exercise", amount, selected_date)
+                            st.session_state.date_st = None
         #Add the progress for the exercise habit
-        if st.session_state.water_am and st.session_state.readingbt == None and st.session_state.exercisebt == None:
+        if st.session_state.water_am:
             if "water_s" not in st.session_state:
                 st.session_state.water_s = None
             if st.session_state.water_s == None:
                 water = st.button("Water", icon = "💧", key="water_bt")
                 if water:
-                    st.session_state.waterbt = True
                     st.session_state.water_s = True
             if st.session_state.water_s:
                 st.header("Water")
@@ -190,6 +183,7 @@ def add_habit_prog():
                         submit = st.button(label="Add", key="water_submit")
                         if submit:
                             progress(user_id, "Water", amount, selected_date)
+                            st.session_state.date_st = None
 
      
 def add_progress(user_id):
