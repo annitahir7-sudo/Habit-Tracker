@@ -1,6 +1,7 @@
 import streamlit as st
 import tablebase
 connection = tablebase.connect()
+#Injecting CSS to add style
 st.html("""
     <style>
     div.st-key-add_habit{
@@ -33,15 +34,17 @@ st.html("""
     </style>
 """)
 
+#Initializing user_id
 st.set_page_config(page_title="Add Habits")
 if "user_id" in st.session_state:
     user_id = st.session_state["user_id"]
-
 else:
     user_id = False
-#Fix pop up (on all with fun facts)
 
+
+#Forms
 def reading_form(user_id):
+    #Placing read_form in session state so that the form disappears after submitting
     if "read_form" not in st.session_state:
         st.session_state.read_form = None
     if st.session_state.read_form == None:
@@ -98,20 +101,23 @@ def water_form(user_id):
             st.subheader("Drinking enough water is often underestimated. Well done!")
             st.caption("You can now pick another habit or add progress")
 
+#Main
 def main(user_id):
     habits = tablebase.see_habits(connection, user_id)
     if "selected_form" not in st.session_state:
         st.session_state.selected_form = None
     with st.container(horizontal=True):
+        #Buttons
         reading = st.button("📖", width ="stretch")
         exercise = st.button("🏃‍♀️", width ="stretch")
         water = st.button("💧", width ="stretch")
         if "rtrue" not in st.session_state:
             st.session_state.rtrue = None
         if "etrue" not in st.session_state:
-            st.session_state.rtrue = None
+            st.session_state.etrue = None
         if "wtrue" not in st.session_state:
-            st.session_state.rtrue = None
+            st.session_state.wtrue = None
+        #Checking that the user has not already added that habit
         for habit in habits:
             try:
                 habit = habit[0]
@@ -123,7 +129,7 @@ def main(user_id):
                 st.session_state.etrue = True
             if "Water" in habit:
                 st.session_state.wtrue = True
-            
+    #When user clicks button
     if reading:
         if st.session_state.rtrue == True:
             st.badge("Already Added habit", color="red")
@@ -138,7 +144,8 @@ def main(user_id):
         if st.session_state.wtrue == True:
             st.badge("Already Added habit", color="blue")
         else:
-            st.session_state.selected_form = "water"
+            st.session_state.selected_form = "water"#
+    #Running the forms
     if st.session_state.selected_form == "reading":
         if user_id:
             reading_form(user_id)
@@ -149,16 +156,18 @@ def main(user_id):
         if user_id:
             water_form(user_id)
     st.divider()
-    #Add some more stuff or make it manually switch to another tab
 
+#Info and Title
 with st.container(key="add_habit"):
     st.header("Add Habits")
 with st.container(key="click"):
     st.write("Click on one of the buttons to add a new habit.")
 
+#Checking user has actually logged in (user_id will have been saved to completions table)
 if user_id:
     main(user_id)
 else:
+    #Redirecting the user to sign up or login
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("ERROR!!!")
