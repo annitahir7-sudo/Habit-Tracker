@@ -1,5 +1,6 @@
 import streamlit as st
 import tablebase
+#Injecting CSS
 st.html("""
     <style>
     .stMainBlockContainer {
@@ -49,13 +50,16 @@ tablebase.create_habits_table(connection)
 with st.container(key="habit"):
     st.title("Habit Tracker")
 with st.container(key="sub"):    
-    st.write("Hii! This a tracker for tracking your water intake, exercise and reading time in order to encourage you to be mroe productive and hopefully guarantee more healthy life!")
+    st.write("Hii! This is a tracker for tracking your water intake, exercise and reading time in order to encourage you to be a little more productive!")
 col1, col2= st.columns(2)
+
+
 with st.container(key = "ainfo"):
     with col1:
         st.write("Habit tracking naturally builds a series of visual cues. When you look at the calendar and see your streak, you will be reminded to act again [...] A habit tracker is a simple way to log your behavior, and the mere act of tracking a behavior can spark the urge to change it.")
         st.page_link("https://jamesclear.com/habit-tracker", label="-James Clear (Author of Atomic Habits)")
     with col2:
+        #Table of contents with links to importance of water, reading and exercise
         with st.container(key="info"):
             with st.container(key="title"):
                 st.subheader("Information:")
